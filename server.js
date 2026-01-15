@@ -25,39 +25,39 @@ app.listen(port, () => {
     console.log('Server running on port', port);
 });
 
-// Example Route: Get all cards
-app.get('/allcards', async (req, res) => {
+// Example Route: Get all countries
+app.get('/allcountries', async (req, res) => {
     try {
         let connection = await mysql.createConnection(dbConfig);
-        const [rows] = await connection.execute('SELECT * FROM defaultdb.cards');
+        const [rows] = await connection.execute('SELECT * FROM defaultdb.countries');
         res.json(rows);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error for allcards' });
+        res.status(500).json({ message: 'Server error for allcountries' });
     }
 });
 
-// Example Route: Create a new card
-app.post('/addcard', async (req, res) => {
-    const { card_name, card_pic } = req.body;
+// Example Route: Create a new country
+app.post('/addcountry', async (req, res) => {
+    const { country_name, country_flag } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('INSERT INTO cards (card_name, card_pic) VALUES (?, ?)', [card_name, card_pic]);
-        res.status(201).json({message: 'Card ' + card_name + ' added successfully'});
+        await connection.execute('INSERT INTO countries (country_name, country_pic) VALUES (?, ?)', [country_name, country_pic]);
+        res.status(201).json({message: 'Country ' + country_name + ' added successfully'});
     } catch (err) {
         console.error(err);
-        res.status(500).json({message: 'Server error - could not add card ' + card_name});
+        res.status(500).json({message: 'Server error - could not add country ' + country_name});
     }
 });
 
-// Example Route: Update card
-app.post('/updatecard', async (req, res) => {
-    const { id, card_name, card_pic } = req.body;
+// Example Route: Update country
+app.post('/updatecountry', async (req, res) => {
+    const { id, country_name, country_pic } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('UPDATE cards SET card_name = ?, card_pic = ? WHERE id = ?', [card_name, card_pic, id]);
+        await connection.execute('UPDATE countries SET country_name = ?, country_pic = ? WHERE id = ?', [country_name, country_pic, id]);
     } catch (err) {
         console.error(err);
-        res.status(500).json({message: 'Server error - could not update card ' + card_name});
+        res.status(500).json({message: 'Server error - could not update country ' + country_name});
     }
 })
